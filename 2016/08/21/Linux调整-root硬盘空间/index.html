@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="流年,泸沽湖,光影," />
+  <meta name="keywords" content="Linux," />
 
 
 
@@ -84,66 +84,22 @@
 
 
 
-<meta name="description" content="难以忘怀的时光，2015年的元旦，未毕业的我体会到了自在的快乐以及泸沽湖美丽的光与影
+<meta name="description" content="最近在往Gitlab私服上Push代码的时候提示磁盘空间已满，首先想到的是去清理Tomcat的日志，于是写了个脚本把日志清空了，但/root下磁盘占有率依然很高，/home下还有很多空间剩余，于是就想是不是可以把/home下的空间挪动一部分到/root下，看了博客后发现方案可行，操作下，成功了，便想着把操作的步骤记下来，方便以后查看，也巩固一些运维的命令
 
-
-
-泛舟
-日落
-碧水
-傍晚前
-行走在小山上
-静谧
-波光粼粼
-如琉璃般的水
-水性杨花
-离开前的天空">
+系统情况CentOS 6.5 64位">
 <meta property="og:type" content="article">
-<meta property="og:title" content="泸沽湖的光影">
-<meta property="og:url" content="http://yoursite.com/2016/07/26/泸沽湖的光影/index.html">
+<meta property="og:title" content="Linux调整/root硬盘空间">
+<meta property="og:url" content="http://yoursite.com/2016/08/21/Linux调整-root硬盘空间/index.html">
 <meta property="og:site_name" content="ccincd's blog">
-<meta property="og:description" content="难以忘怀的时光，2015年的元旦，未毕业的我体会到了自在的快乐以及泸沽湖美丽的光与影
+<meta property="og:description" content="最近在往Gitlab私服上Push代码的时候提示磁盘空间已满，首先想到的是去清理Tomcat的日志，于是写了个脚本把日志清空了，但/root下磁盘占有率依然很高，/home下还有很多空间剩余，于是就想是不是可以把/home下的空间挪动一部分到/root下，看了博客后发现方案可行，操作下，成功了，便想着把操作的步骤记下来，方便以后查看，也巩固一些运维的命令
 
-
-
-泛舟
-日落
-碧水
-傍晚前
-行走在小山上
-静谧
-波光粼粼
-如琉璃般的水
-水性杨花
-离开前的天空">
-<meta property="og:image" content="http://oax5iq75d.bkt.clouddn.com/DSC_0872.JPG">
-<meta property="og:image" content="http://oax5iq75d.bkt.clouddn.com/DSC_0807.JPG">
-<meta property="og:image" content="http://oax5iq75d.bkt.clouddn.com/DSC_0859.JPG">
-<meta property="og:image" content="http://oax5iq75d.bkt.clouddn.com/DSC_0560.JPG">
-<meta property="og:image" content="http://oax5iq75d.bkt.clouddn.com/DSC_0593.JPG">
-<meta property="og:image" content="http://oax5iq75d.bkt.clouddn.com/DSC_0763.JPG">
-<meta property="og:image" content="http://oax5iq75d.bkt.clouddn.com/DSC_0907.JPG">
-<meta property="og:image" content="http://oax5iq75d.bkt.clouddn.com/DSC_0923.JPG">
-<meta property="og:image" content="http://oax5iq75d.bkt.clouddn.com/DSC_0920.JPG">
-<meta property="og:image" content="http://oax5iq75d.bkt.clouddn.com/DSC_0693.JPG">
-<meta property="og:updated_time" content="2016-08-18T15:43:55.000Z">
+系统情况CentOS 6.5 64位">
+<meta property="og:updated_time" content="2016-08-21T16:26:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="泸沽湖的光影">
-<meta name="twitter:description" content="难以忘怀的时光，2015年的元旦，未毕业的我体会到了自在的快乐以及泸沽湖美丽的光与影
+<meta name="twitter:title" content="Linux调整/root硬盘空间">
+<meta name="twitter:description" content="最近在往Gitlab私服上Push代码的时候提示磁盘空间已满，首先想到的是去清理Tomcat的日志，于是写了个脚本把日志清空了，但/root下磁盘占有率依然很高，/home下还有很多空间剩余，于是就想是不是可以把/home下的空间挪动一部分到/root下，看了博客后发现方案可行，操作下，成功了，便想着把操作的步骤记下来，方便以后查看，也巩固一些运维的命令
 
-
-
-泛舟
-日落
-碧水
-傍晚前
-行走在小山上
-静谧
-波光粼粼
-如琉璃般的水
-水性杨花
-离开前的天空">
-<meta name="twitter:image" content="http://oax5iq75d.bkt.clouddn.com/DSC_0872.JPG">
+系统情况CentOS 6.5 64位">
 
 
 
@@ -164,9 +120,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/07/26/泸沽湖的光影/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/08/21/Linux调整-root硬盘空间/"/>
 
-  <title> 泸沽湖的光影 | ccincd's blog </title>
+  <title> Linux调整/root硬盘空间 | ccincd's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -316,7 +272,7 @@
             
             
               
-                泸沽湖的光影
+                Linux调整/root硬盘空间
               
             
           </h1>
@@ -328,8 +284,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-26T13:02:17+08:00" content="2016-07-26">
-              2016-07-26
+            <time itemprop="dateCreated" datetime="2016-08-21T23:10:06+08:00" content="2016-08-21">
+              2016-08-21
             </time>
           </span>
 
@@ -342,8 +298,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/在路上/" itemprop="url" rel="index">
-                    <span itemprop="name">在路上</span>
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
                   </a>
                 </span>
 
@@ -358,8 +314,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/07/26/泸沽湖的光影/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/26/泸沽湖的光影/" itemprop="commentsCount"></span>
+                <a href="/2016/08/21/Linux调整-root硬盘空间/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/21/Linux调整-root硬盘空间/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -383,20 +339,42 @@
 
       
         <blockquote>
-<p>难以忘怀的时光，2015年的元旦，未毕业的我体会到了自在的快乐以及泸沽湖美丽的光与影</p>
+<p><em>最近在往Gitlab私服上Push代码的时候提示磁盘空间已满，首先想到的是去清理Tomcat的日志，于是写了个脚本把日志清空了，但/root下磁盘占有率依然很高，/home下还有很多空间剩余，于是就想是不是可以把/home下的空间挪动一部分到/root下，看了博客后发现方案可行，操作下，成功了，便想着把操作的步骤记下来，方便以后查看，也巩固一些运维的命令</em></p>
 </blockquote>
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=167802&auto=0&height=66"></iframe>
-
-<h4 id="泛舟"><a href="#泛舟" class="headerlink" title="泛舟"></a>泛舟</h4><p><img src="http://oax5iq75d.bkt.clouddn.com/DSC_0872.JPG" alt="泛舟"></p>
-<h4 id="日落"><a href="#日落" class="headerlink" title="日落"></a>日落</h4><p><img src="http://oax5iq75d.bkt.clouddn.com/DSC_0807.JPG" alt="日落"></p>
-<h4 id="碧水"><a href="#碧水" class="headerlink" title="碧水"></a>碧水</h4><p><img src="http://oax5iq75d.bkt.clouddn.com/DSC_0859.JPG" alt="碧水"></p>
-<h4 id="傍晚前"><a href="#傍晚前" class="headerlink" title="傍晚前"></a>傍晚前</h4><p><img src="http://oax5iq75d.bkt.clouddn.com/DSC_0560.JPG" alt="傍晚前"></p>
-<h4 id="行走在小山上"><a href="#行走在小山上" class="headerlink" title="行走在小山上"></a>行走在小山上</h4><p><img src="http://oax5iq75d.bkt.clouddn.com/DSC_0593.JPG" alt="行走在小山上"></p>
-<h4 id="静谧"><a href="#静谧" class="headerlink" title="静谧"></a>静谧</h4><p><img src="http://oax5iq75d.bkt.clouddn.com/DSC_0763.JPG" alt="静谧"></p>
-<h4 id="波光粼粼"><a href="#波光粼粼" class="headerlink" title="波光粼粼"></a>波光粼粼</h4><p><img src="http://oax5iq75d.bkt.clouddn.com/DSC_0907.JPG" alt="波光粼粼"></p>
-<h4 id="如琉璃般的水"><a href="#如琉璃般的水" class="headerlink" title="如琉璃般的水"></a>如琉璃般的水</h4><p><img src="http://oax5iq75d.bkt.clouddn.com/DSC_0923.JPG" alt="如琉璃般的水"></p>
-<h4 id="水性杨花"><a href="#水性杨花" class="headerlink" title="水性杨花"></a>水性杨花</h4><p><img src="http://oax5iq75d.bkt.clouddn.com/DSC_0920.JPG" alt="水性杨花"></p>
-<h4 id="离开前的天空"><a href="#离开前的天空" class="headerlink" title="离开前的天空"></a>离开前的天空</h4><p><img src="http://oax5iq75d.bkt.clouddn.com/DSC_0693.JPG" alt="离开前的天空"></p>
+<h3 id="系统情况"><a href="#系统情况" class="headerlink" title="系统情况"></a>系统情况</h3><p>CentOS 6.5 64位</p>
+<h3 id="查看磁盘占用情况命令"><a href="#查看磁盘占用情况命令" class="headerlink" title="查看磁盘占用情况命令"></a>查看磁盘占用情况命令</h3><ol>
+<li>df -h 查看整个磁盘还剩多少空间<br></li>
+<li>du –max-depth=1 -h 当前文件夹磁盘使用情况<br></li>
+<li>du -sh 当前文件夹大小<br></li>
+<li>du -sh /root 某个路径下（root）的大小<br></li>
+</ol>
+<p>四个命令都很实用，在开发机上执行命令一的时候提示 <em>/dev/mapper/vg_localserver_lv_root</em> （不同的系统、版本或硬件配置可能名称会不同）的占有率已经达到了100%，而 <em>/dev/mapper/vg_localserver_lv_home</em> 仅有个位数的占用率，调整的目标就是在不停掉进程的情况下从后者挪几百个G到前者的空间</p>
+<p><font color="red"><b>Tips:</b></font> 使用命令二可以快速定位硬盘上哪个文件夹占用了较大的空间，从而可以有针对性的进行清除，比如我定位到机器上 <em>/usr/local/sonatype-work/nexus/storage/snapshots/</em> 占据了大部分的空间，发现原来是每次打过的war包没有定期删除，久而久之越来越多，把硬盘打爆的原来是它，而不是日志</p>
+<h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><p><b>a.</b> 使用unmount命令卸载 <em>/dev/mapper/vg_localserver_lv_home</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">umount /home</div></pre></td></tr></table></figure>
+<blockquote>
+<p>这一步并没有卸载成功，提示有进程占用文件系统，这时先执行 <em>fuser -m /home</em> 命令，查找到占用进程的pid，然后执行kill -9 pid命令强制杀掉。这种方式比较暴力，最好确认下相应的pid可以kill掉，不然还是建议使用正常方式关闭进程</p>
+</blockquote>
+<p>执行完成之后再次运行 <em>df -h</em> 命令发现，<em>/dev/mapper/vg_localserver_lv_home</em> 已经不显现了</p>
+<p><b>b.</b> 调整 <em>/dev/mapper/vg_localserver_lv_home</em> 的大小</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">e2fsck <span class="_">-f</span> /dev/mapper/vg_localserver-lv_home</div><div class="line">resize2fs -p /dev/mapper/vg_localserver-lv_home 256G</div><div class="line">mount /home</div></pre></td></tr></table></figure>
+<blockquote>
+<p>如果不执行 <em>e2fsck</em> 命令则可能会提示不能跳过，应当先使用该命令来检查ext2、ext3、ext4等文件系统的正确性；第二条命令可以将目标分区调整（缩小）到期望的大小，这样就会有一部分空间（/home当前空间减去期望的大小）空余出来，可以分配给别的分区</p>
+</blockquote>
+<p>由于步骤a执行了卸载，所以调整了空间之后还要执行挂载命令。执行完成之后再次运行df -h命令，可以发现 <em>/dev/mapper/vg_localserver_lv_home</em> 又回来了</p>
+<p><b>c.</b> 调整 <em>/dev/mapper/vg_localserver_lv_home</em> 的逻辑分区大小</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lvreduce -L 256G /dev/mapper/vg_localserver-lv_home</div></pre></td></tr></table></figure>
+<blockquote>
+<p>前面已经调整过分区大小，这条命令的作用是调整逻辑分区的大小，这样空余出来的空间才可以真正被分配到其它的分区</p>
+</blockquote>
+<p>执行完命令后可以使用 <em>vgdisplay</em> 命令查看目前空余磁盘空间的信息</p>
+<p><b>d.</b> 调整（增加） <em>/dev/mapper/vg_localserver_lv_root</em> 的大小</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">lvextend -L +615G /dev/mapper/vg_localserver-lv_root</div><div class="line">resize2fs -p /dev/mapper/vg_localserver-lv_root</div></pre></td></tr></table></figure>
+<blockquote>
+<p>我有617G的空余空间，只增加了615G，留了一些空余，目的是为了避免出现Free PE空间不足的情况，具体留多少比较合适并没有考证</p>
+</blockquote>
+<p>第一条命令增加逻辑分区的大小，第二条命令执行空间增加操作 <em>-p</em> 命令是为了打印执行进度，但在我操作的时候一点进度也没有打印出来，调整空间有点大，时间耗的有点久（几十分钟），导致我有些紧张，以为危险操作要失败了，后来想起来可以使用 <em>df -h</em> 命令查看分区的空间大小，之后看到分区空间正在稳步增加，于是就放心了。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="Linux下调整根目录的空间大小">Linux下调整根目录的空间大小</a></p>
 
       
     </div>
@@ -419,11 +397,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/流年/" rel="tag">#流年</a>
-          
-            <a href="/tags/泸沽湖/" rel="tag">#泸沽湖</a>
-          
-            <a href="/tags/光影/" rel="tag">#光影</a>
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
           
         </div>
       
@@ -432,13 +406,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/08/18/Redis“漏洞”，SSH免登录攻击/" rel="next" title="Redis“漏洞”，SSH免登录攻击">
+                <i class="fa fa-chevron-left"></i> Redis“漏洞”，SSH免登录攻击
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/08/07/下冰雹了/" rel="prev" title="下冰雹了">
-                下冰雹了 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -453,10 +427,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/07/26/泸沽湖的光影/"
-     data-title="泸沽湖的光影"
+        <div class="ds-share flat" data-thread-key="2016/08/21/Linux调整-root硬盘空间/"
+     data-title="Linux调整/root硬盘空间"
      data-content=""
-     data-url="http://yoursite.com/2016/07/26/泸沽湖的光影/">
+     data-url="http://yoursite.com/2016/08/21/Linux调整-root硬盘空间/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -483,8 +457,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/07/26/泸沽湖的光影/"
-           data-title="泸沽湖的光影" data-url="http://yoursite.com/2016/07/26/泸沽湖的光影/">
+      <div class="ds-thread" data-thread-key="2016/08/21/Linux调整-root硬盘空间/"
+           data-title="Linux调整/root硬盘空间" data-url="http://yoursite.com/2016/08/21/Linux调整-root硬盘空间/">
       </div>
     
   </div>
@@ -575,7 +549,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#泛舟"><span class="nav-number">1.</span> <span class="nav-text">泛舟</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#日落"><span class="nav-number">2.</span> <span class="nav-text">日落</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#碧水"><span class="nav-number">3.</span> <span class="nav-text">碧水</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#傍晚前"><span class="nav-number">4.</span> <span class="nav-text">傍晚前</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#行走在小山上"><span class="nav-number">5.</span> <span class="nav-text">行走在小山上</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静谧"><span class="nav-number">6.</span> <span class="nav-text">静谧</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#波光粼粼"><span class="nav-number">7.</span> <span class="nav-text">波光粼粼</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如琉璃般的水"><span class="nav-number">8.</span> <span class="nav-text">如琉璃般的水</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#水性杨花"><span class="nav-number">9.</span> <span class="nav-text">水性杨花</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#离开前的天空"><span class="nav-number">10.</span> <span class="nav-text">离开前的天空</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#系统情况"><span class="nav-number">1.</span> <span class="nav-text">系统情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看磁盘占用情况命令"><span class="nav-number">2.</span> <span class="nav-text">查看磁盘占用情况命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作步骤"><span class="nav-number">3.</span> <span class="nav-text">操作步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
           </div>
         </section>
