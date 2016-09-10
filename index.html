@@ -339,9 +339,9 @@
         
           
             <blockquote>
-<p><em>MySQL查询在用到排序的时候，需要特别注意索引的设计，以免产生外部索引排序（filesort），降低查询效率</em></p>
+<p><em>MySQL查询在用到排序的时候，需要特别注意索引的设计，以免产生外部索引排序（filesort），降低查询效率（使用文件排序对小数据集是很快的，但如果一个查询匹配的结果有上百万行的话会怎样？）</em></p>
 </blockquote>
-<p>首先建一个测试表，包含主键索引和查询字段的索引：</p>
+<p><b>简单的例子（MySQL 5.6）：</b><br>首先建一个测试表，包含主键索引和查询字段的索引：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`test_where_order_by`</span> (</div><div class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">unsigned</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</div><div class="line">  <span class="string">`age`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'0'</span>,</div><div class="line">  <span class="string">`score`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'0'</span>,</div><div class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</div><div class="line">  <span class="keyword">KEY</span> <span class="string">`idx_age`</span> (<span class="string">`age`</span>) <span class="keyword">USING</span> BTREE</div><div class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</div></pre></td></tr></table></figure>
 <p>假如现在的需求的查询是：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> test_where_order_by <span class="keyword">WHERE</span> age <span class="keyword">BETWEEN</span> <span class="number">18</span> <span class="keyword">AND</span> <span class="number">25</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> score;</div></pre></td></tr></table></figure>
@@ -369,8 +369,15 @@
 <p>如果调换ORDER BY字段的顺序，使其违反索引的最左前缀原理，则会使用filesort，查询和结果如下：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> test_where_order_by <span class="keyword">WHERE</span> age <span class="keyword">BETWEEN</span> <span class="number">18</span> <span class="keyword">AND</span> <span class="number">25</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> phone, score;</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">id	select_type	table	partitions	type	possible_keys	key	key_len	ref	rows	filtered	Extra</div><div class="line">1	SIMPLE	test_where_order_by		index		idx_score_phone_age	56		1	100.00	Using where; Using index; Using filesort</div></pre></td></tr></table></figure>
-<p>总结：按照最左前缀原则，将ORDER BY字段放在联合索引的前边，之后是WHERE字段，这样可以避免filesort</p>
-
+<p><b>WHERE字句不是范围查询的情况：</b></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> test_where_order_by <span class="keyword">WHERE</span> score = <span class="number">60</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> phone, age <span class="keyword">limit</span> <span class="number">10</span>;</div></pre></td></tr></table></figure>
+<p>依然使用idx_score_phone_age索引，这时同样可以避免filesort（注意到此时WHERE和ORDER BY字段的顺序是正序的）</p>
+<p><b>总结：</b></p>
+<ul>
+<li>WHERE子句是范围查询时，按照最左前缀原则，将ORDER BY字段放在联合索引的前边，之后是WHERE字段，这样可以避免filesort</li>
+<li>WHERE子句是值匹配时，按照正序来建立索引</li>
+</ul>
+<font color="blue">实际业务中，最好使用explain查看一下执行计划，以确定建立的索引是匹配需求的</font>
           
         
       
